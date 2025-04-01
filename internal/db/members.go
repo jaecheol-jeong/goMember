@@ -30,8 +30,12 @@ func NewMemberDB(dataSourceName string) (*MemberDB, error) {
 
 // InsertMember는 새로운 멤버를 추가
 func (m *MemberDB) InsertMember(member models.Member) error {
+	err := member.HashPassword(member.Password)
+	if err != nil {
+		return err
+	}
 	query := "INSERT INTO members (id, email, name, password, role, created_at) VALUES (?, ?, ?, ?, ?, ?)"
-	_, err := m.Db.Exec(query, member.ID, member.Email, member.Name, member.Password, member.Role, member.CreatedAt)
+	_, err = m.Db.Exec(query, member.ID, member.Email, member.Name, member.Password, member.Role, member.CreatedAt)
 	return err
 }
 
