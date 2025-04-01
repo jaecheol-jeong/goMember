@@ -14,7 +14,7 @@ type MemberDB struct {
 	Db *sql.DB
 }
 
-// NewMemberDB는 새로운 MemberDB 인스턴스를 생성합니다.
+// NewMemberDB는 새로운 MemberDB 인스턴스를 생성
 func NewMemberDB(dataSourceName string) (*MemberDB, error) {
 	db, err := sql.Open("mysql", dataSourceName)
 	if err != nil {
@@ -106,10 +106,10 @@ func (m *MemberDB) SearchMembers(name string) ([]*models.Member, error) {
 	return members, nil
 }
 
-// parseTime은 []uint8 타입의 시간을 time.Time 타입으로 변환합니다.
+// parseTime은 []uint8 타입의 시간을 time.Time 타입으로 변환
 func parseTime(t []uint8) (time.Time, error) {
 	timeString := string(t)
-	return time.Parse("2006-01-02 15:04:05", timeString) // MySQL datetime format
+	return time.Parse("2006-01-02 15:04:05", timeString)
 }
 
 // Close는 데이터베이스

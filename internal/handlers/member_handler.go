@@ -14,12 +14,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// MemberHandler는 멤버 API 엔드포인트를 처리합니다.
+// MemberHandler는 멤버 API 엔드포인트를 처리.
 type MemberHandler struct {
 	DB *db.MemberDB
 }
 
-// CreateMember는 새 멤버를 생성합니다.
+// CreateMember는 새 멤버를 생성.
 func (h *MemberHandler) CreateMember(c *gin.Context) {
 	var member models.Member
 	if err := c.BindJSON(&member); err != nil {
@@ -37,7 +37,7 @@ func (h *MemberHandler) CreateMember(c *gin.Context) {
 	c.JSON(http.StatusCreated, member)
 }
 
-// GetMember는 ID로 멤버를 가져옵니다.
+// GetMember는 ID로 멤버를 가져옴.
 func (h *MemberHandler) GetMember(c *gin.Context) {
 	id := c.Param("id")
 	member, err := h.DB.GetMember(id)
@@ -55,7 +55,7 @@ func (h *MemberHandler) GetMember(c *gin.Context) {
 	c.JSON(http.StatusOK, member)
 }
 
-// UpdateMember는 멤버를 업데이트합니다.
+// UpdateMember는 멤버를 업데이트.
 func (h *MemberHandler) UpdateMember(c *gin.Context) {
 	id := c.Param("id")
 
@@ -77,7 +77,7 @@ func (h *MemberHandler) UpdateMember(c *gin.Context) {
 	c.JSON(http.StatusOK, member)
 }
 
-// DeleteMember는 멤버를 삭제합니다.
+// DeleteMember는 멤버를 삭제.
 func (h *MemberHandler) DeleteMember(c *gin.Context) {
 	id := c.Param("id")
 	err := h.DB.DeleteMember(id)
@@ -90,7 +90,7 @@ func (h *MemberHandler) DeleteMember(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Member deleted"})
 }
 
-// SearchMembers는 이름으로 멤버를 검색합니다.
+// SearchMembers는 이름으로 멤버를 검색.
 func (h *MemberHandler) SearchMembers(c *gin.Context) {
 	name := c.Query("name")
 	members, err := h.DB.SearchMembers(name)
@@ -103,7 +103,7 @@ func (h *MemberHandler) SearchMembers(c *gin.Context) {
 	c.JSON(http.StatusOK, members)
 }
 
-// Login은 멤버의 로그인 요청을 처리합니다.
+// Login은 멤버의 로그인 요청을 처리.
 func (h *MemberHandler) Login(c *gin.Context) {
 	var loginRequest struct {
 		Email    string `json:"email"`
@@ -116,7 +116,7 @@ func (h *MemberHandler) Login(c *gin.Context) {
 		return
 	}
 
-	// 이메일로 멤버를 찾습니다.
+	// 이메일로 멤버 조회.
 	member, err := h.findMemberByEmail(loginRequest.Email)
 	if err != nil {
 		log.Printf("Failed to get member by email: %s", err)
@@ -129,13 +129,12 @@ func (h *MemberHandler) Login(c *gin.Context) {
 		return
 	}
 
-	// 비밀번호를 확인합니다.
 	if err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(loginRequest.Password)); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
 		return
 	}
 
-	// JWT 토큰을 생성합니다.
+	// JWT 토큰을 생성.
 	token, err := h.generateJWTToken(member.ID)
 	if err != nil {
 		log.Printf("Failed to generate JWT token: %s", err)
@@ -146,7 +145,7 @@ func (h *MemberHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-// findMemberByEmail은 이메일 주소로 멤버를 찾습니다.
+// findMemberByEmail은 이메일 주소로 멤버 조회.
 func (h *MemberHandler) findMemberByEmail(email string) (*models.Member, error) {
 	var member models.Member
 	query := "SELECT id, email, name, password, role, created_at FROM members WHERE email = ?"
@@ -160,7 +159,7 @@ func (h *MemberHandler) findMemberByEmail(email string) (*models.Member, error) 
 	return &member, nil
 }
 
-// generateJWTToken은 멤버 ID를 기반으로 JWT 토큰을 생성합니다.
+// generateJWTToken은 멤버 ID를 기반으로 JWT 토큰을 생성.
 func (h *MemberHandler) generateJWTToken(memberID string) (string, error) {
 	// 토큰 만료 시간 설정 (예: 1시간)
 	expirationTime := time.Now().Add(1 * time.Hour)

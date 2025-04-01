@@ -95,7 +95,7 @@ func main() {
 	// 서버 시작
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8001" // 기본 포트
+		port = config.APP_PORT // 기본 포트
 	}
 	log.Printf("Server is running on port %s", port)
 	if err := router.Run(":" + port); err != http.ErrServerClosed {
