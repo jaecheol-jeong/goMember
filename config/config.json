@@ -1,0 +1,12 @@
+{
+    "APP_NAME": "members",
+    "APP_PORT": "8001",
+    "DB": {
+        "USERNAME": "root",
+        "PASSWORD": "xwing",
+        "PORT": "3306",
+        "HOST": "127.0.0.1",
+        "DB_NAME": "U2",
+        "KIND" : "mysql"
+    }
+}
